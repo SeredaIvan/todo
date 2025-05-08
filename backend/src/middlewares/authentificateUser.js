@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 export const authentificateUser=(req,res,next)=>{
     const authHeader= req.headers['authorization']
-    if(!authHeader) return res.sendStatus(403)
+    if(!authHeader) return res.sendStatus(400)
 
     const token = authHeader.split(' ')[1]
     if(token){
@@ -15,7 +15,7 @@ export const authentificateUser=(req,res,next)=>{
         })
     }
     else{
-        return res.status(403).json({message : 'token not founded, must be Bearer TOKEN'})
+        return res.status(400).json({message : 'token not founded, must be Bearer TOKEN'})
     }
 
 }
