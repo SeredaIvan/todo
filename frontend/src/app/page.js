@@ -5,14 +5,22 @@ import Task from "@/components/task/Task";
 
 
 export default function Home() {
-    const [tasks, setTasks] = useState([])
-    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null
     const router = useRouter()
-    const [sortAsc, setSortAsc] = useState(true);
+
+    const [tasks, setTasks] = useState([])
+    const [aviable, setAviable] = useState('')
+    const [sortAsc, setSortAsc] = useState(true)
+    const [loading,setLoading]=useState(true)
+
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null
+
+
 
     useEffect(() => {
         const fetchTasks = async () => {
+
             if (!accessToken) {
+                alert('Вам потрібно увійти чи зареєструватись')
                 router.push("/login")
                 return
             }
@@ -28,8 +36,13 @@ export default function Home() {
             if (response.ok) {
                 const data = await response.json()
                 setTasks(data.tasks)
-            } else {
-                router.push("/login")
+                setLoading(false)
+                if(data.tasks.length=== 0){
+                    setAviable('No tasks')
+                }
+            }
+            else {
+                setAviable('No tasks')
             }
         }
 
@@ -56,13 +69,15 @@ export default function Home() {
             <button onClick={() => setSortAsc(prev => !prev)}>
                 Sort: {sortAsc ? "IN_PROCESS → COMPLETED" : "COMPLETED → IN_PROCESS"}
             </button>
-            {sortedTasks.length > 0 ? (
-                sortedTasks.map(task => (
+            {loading?
+                (<p>Loading...</p>)
+                :
+                (sortedTasks.map(task => (
                     <Task key={task.id} task={task} onUpdate={handleUpdate} accessToken={accessToken} />
                 ))
-            ) : (
-                <p>No tasks available</p>
-            )}
+            )
+            }
+            <p>{aviable}</p>
         </div>
     )
 }

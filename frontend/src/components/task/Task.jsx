@@ -2,11 +2,15 @@ import { useState } from "react"
  const Task = ({ task, onUpdate, accessToken }) => {
      const [isEditing, setIsEditing] = useState(false)
      const [formData, setFormData] = useState({ ...task })
+
      const handleChange = (e) => {
          const { name, value } = e.target
          setFormData(prev => ({
              ...prev,
-             [name]: name === "status" ? value === "true" : value
+             [name]: name === "status"
+                 ? value === "true" ? 'COMPLETED' : 'IN_PROCESS'
+                 : value
+
          }))
      }
      const handleSave = async () => {
@@ -93,7 +97,9 @@ import { useState } from "react"
                 </>
             )}
             <button onClick={() => handleDelete(task.id)}>Delete</button>
+
         </div>
+
     );
 };
  export default Task
