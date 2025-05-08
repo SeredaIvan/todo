@@ -122,7 +122,7 @@ export const update = async (req,res)=>{
                 status: status,
             }
         })
-
+        console.log(task)
         return res.status(200).json(task);
     }
     catch (err){

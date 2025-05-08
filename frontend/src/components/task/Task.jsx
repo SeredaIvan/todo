@@ -1,5 +1,5 @@
 import { useState } from "react"
- const Task = ({ task, onUpdate, accessToken }) => {
+ const Task = ({ task, onUpdate, accessToken, refresh }) => {
      const [isEditing, setIsEditing] = useState(false)
      const [formData, setFormData] = useState({ ...task })
 
@@ -16,23 +16,38 @@ import { useState } from "react"
          console.log(formData)
      }
      const handleSave = async () => {
-         const response = await fetch("http://localhost:4000/api/v1.0/task/update", {
-             method: "PUT",
-             headers: {
-                 "Content-Type": "application/json",
-                 "Authorization": `Bearer ${accessToken}`,
-             },
-             body: JSON.stringify(formData),
-         })
+         try {
+             const response = await fetch(`http://localhost:4000/api/v1.0/task/update`, {
+                 method: "PUT",
+                 body: JSON.stringify({
+                     id: formData.id,
+                     title: formData.title,
+                     desc: formData.desc,
+                     status: formData.status,
+                 }),
+                 headers: {
+                     "Content-Type": "application/json",
+                     "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                 },
+             });
 
-         if (response.ok) {
-             const updated = await response.json()
-             onUpdate(updated.task)
-             setIsEditing(false)
-         } else {
-             alert("Update failed.")
+             if (!response.ok) {
+                 const error = await response.json();
+                 console.error("Server error:", error);
+                 return;
+             }
+
+             const updated = await response.json();
+             console.log("UPDATED RESPONSE:", updated);
+
+             onUpdate(updated);
+             setIsEditing(false);
+             refresh()
+         } catch (err) {
+             console.error( err)
          }
-     }
+     };
+
      const handleDelete = async (id) => {
          const response = await fetch("http://localhost:4000/api/v1.0/task/delete", {
              method: "DELETE",
@@ -46,7 +61,7 @@ import { useState } from "react"
          if (response.ok) {
              alert('delete')
          } else {
-             alert("Delete failed.")
+             alert('delete failed')
          }
      }
     return (

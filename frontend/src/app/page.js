@@ -7,6 +7,7 @@ import Task from "@/components/task/Task";
 export default function Home() {
     const router = useRouter()
 
+
     const [tasks, setTasks] = useState([])
     const [aviable, setAviable] = useState('')
     const [sortAsc, setSortAsc] = useState(true)
@@ -49,6 +50,10 @@ export default function Home() {
         fetchTasks()
     }, [accessToken, router])
 
+    const handleRefresh=()=>{
+        router.push("/")
+    }
+
     const handleUpdate = (updatedTask) => {
         setTasks(prev =>
             prev.map(t => (t.id === updatedTask.id ? updatedTask : t))
@@ -73,7 +78,12 @@ export default function Home() {
                 (<p>Loading...</p>)
                 :
                 (sortedTasks.map(task => (
-                    <Task key={task.id} task={task} onUpdate={handleUpdate} accessToken={accessToken} />
+                    <Task
+                        key={task.id}
+                        task={task}
+                        onUpdate={handleUpdate}
+                        accessToken={accessToken}
+                        refresh={handleRefresh}/>
                 ))
             )
             }
