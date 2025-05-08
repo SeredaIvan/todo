@@ -68,52 +68,73 @@ import { useState } from "react"
         <div className="task-card">
             {isEditing ? (
                 <>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        name="desc"
-                        value={formData.desc}
-                        onChange={handleChange}
-                    />
-                    <div>
-                        <label>
-                            <input
-                                type="radio"
-                                name="status"
-                                value="true"
-                                checked={formData.status === true}
-                                onChange={handleChange}
-                            />
-                            Completed
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="status"
-                                value="false"
-                                checked={formData.status === false}
-                                onChange={handleChange}
-                            />
-                            In process
-                        </label>
-                    </div>
+                    <li>
+                        <div className="px-4 py-5 sm:px-6">
+                            <div className="flex items-center justify-between">
+                                <input
+                                    type="text"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mt-4 flex items-center justify-between">
+                                <input
+                                    type="text"
+                                    name="desc"
+                                    value={formData.desc}
+                                    onChange={handleChange}
+                                />
+                                <a href="#" onClick={() => setIsEditing(true)} className="font-medium text-indigo-600 hover:text-indigo-500">Edit</a>
+                            </div>
+                            <div className="mt-4 flex items-center justify-between">
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="status"
+                                            checked={formData.status}
+                                            onChange={handleChange}
+                                        />
+                                        Completed
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="status"
+                                            checked={formData.status}
+                                            onChange={handleChange}
+                                        />
+                                        In process
+                                    </label>
+                                </div>
+                                <a href="#" onClick={() => handleSave(task.id)} className="font-medium text-green-500 hover:text-green-800">OK</a>
+                            </div>
+                        </div>
+                    </li>
 
-                    <button onClick={handleSave}>OK</button>
                 </>
             ) : (
                 <>
-                    <h3>{task.title}</h3>
-                    <p>{task.desc}</p>
-                    <p>Status: {task.status==='COMPLETED' ? "Completed" : "In process"}</p>
-                    <button onClick={() => setIsEditing(true)}>Edit</button>
+                    <li>
+                        <div className="px-4 py-5 sm:px-6">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-lg leading-6 font-medium text-gray-900">{task.title}</h3>
+
+                            </div>
+                            <div className="mt-4 flex items-center justify-between">
+                                <div><p className="mt-1 max-w-2xl text-sm text-gray-500">{task.desc}</p></div>
+                                <a href="#" onClick={() => setIsEditing(true)} className="font-medium text-indigo-600 hover:text-indigo-500">Edit</a>
+                            </div>
+                            <div className="mt-4 flex items-center justify-between">
+                                <p className="text-sm font-medium text-gray-500">Status: <span className="text-green-600">{task.status==='COMPLETED' ? "Completed" : "In process"}</span></p>
+                                <a href="#" onClick={() => handleDelete(task.id)} className="font-medium text-red-100 hover:text-red-800">Delete</a>
+                            </div>
+                        </div>
+                    </li>
+
                 </>
             )}
-            <button onClick={() => handleDelete(task.id)}>Delete</button>
 
         </div>
 

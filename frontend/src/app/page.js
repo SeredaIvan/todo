@@ -70,22 +70,27 @@ export default function Home() {
     });
     return (
         <div>
-            <h1>Task List</h1>
-            <button onClick={() => setSortAsc(prev => !prev)}>
+            <div className="bg-gray-100 py-2 px-4">
+                <h2 className="text-xl font-semibold text-gray-800">Tasklist</h2>
+            </div>
+
+            <button onClick={() => setSortAsc(prev => !prev)} className={"py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"}>
                 Sort: {sortAsc ? "IN_PROCESS → COMPLETED" : "COMPLETED → IN_PROCESS"}
             </button>
             {loading?
                 (<p>Loading...</p>)
                 :
                 (sortedTasks.map(task => (
-                    <Task
-                        key={task.id}
-                        task={task}
-                        onUpdate={handleUpdate}
-                        accessToken={accessToken}
-                        refresh={handleRefresh}/>
-                ))
-            )
+                    <ul key={task.id} className="bg-white shadow overflow-hidden sm:rounded-md max-w-sm mx-auto mt-2">
+                        <Task
+                            task={task}
+                            onUpdate={handleUpdate}
+                            accessToken={accessToken}
+                            refresh={handleRefresh}
+                        />
+                    </ul>
+                )))
+
             }
             <p>{aviable}</p>
         </div>
