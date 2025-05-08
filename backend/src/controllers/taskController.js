@@ -1,4 +1,5 @@
 import {prisma} from "../prismaSingletone/prismaClient.js";
+import * as util from "util";
 
 
 export const createTask = async (req,res)=>{
@@ -90,6 +91,34 @@ export const updateStatus=async (req,res)=>{
                 id:id
             },
             data: {
+                status: status,
+            }
+        })
+
+        return res.status(200).json(task);
+    }
+    catch (err){
+        console.error(err)
+        return res.status(500).json({ message: 'server error' })
+    }
+}
+export const update=async (req,res)=>{
+    const title=req.body.title
+    const desc=req.body.desc
+    const status=req.body.status
+    const id =req.body.id
+    try {
+        if (!status) {
+            return res.status(400).json({message: 'status is required'})
+        }
+
+        const task =await prisma.task.update({
+            where: {
+                id:id
+            },
+            data: {
+                title:title,
+                desc:desc,
                 status: status,
             }
         })

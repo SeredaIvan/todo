@@ -34,13 +34,13 @@ import { useState } from "react"
                  "Content-Type": "application/json",
                  "Authorization": `Bearer ${accessToken}`,
              },
-             body: {id:id},
+             body: JSON.stringify( {id:id}),
          })
 
          if (response.ok) {
              alert('delete')
          } else {
-             alert("Update failed.")
+             alert("Delete failed.")
          }
      }
     return (
@@ -81,17 +81,18 @@ import { useState } from "react"
                             In process
                         </label>
                     </div>
+
                     <button onClick={handleSave}>OK</button>
                 </>
             ) : (
                 <>
                     <h3>{task.title}</h3>
                     <p>{task.desc}</p>
-                    <p>Status: {task.status ? "Completed" : "In process"}</p>
+                    <p>Status: {task.status==='COMPLETED' ? "Completed" : "In process"}</p>
                     <button onClick={() => setIsEditing(true)}>Edit</button>
                 </>
             )}
-            <button onClick={handleDelete(task.id)}>Delete</button>
+            <button onClick={() => handleDelete(task.id)}>Delete</button>
         </div>
     );
 };
