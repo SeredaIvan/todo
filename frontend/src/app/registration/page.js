@@ -37,8 +37,9 @@ const Registration = () => {
 
     return (
         <div >
-            <h2>Registration</h2>
+
             <form onSubmit={handleLogin} className="max-w-md p-4 shadow rounded bg-white">
+                <h2 className="mb-4">Registration</h2>
                 <div>
                     <label htmlFor="name">Username</label>
                     <input
@@ -61,7 +62,7 @@ const Registration = () => {
                         required
                     />
                 </div>
-                <button className="bg-gray-700 text-white py-1 px-4 rounded hover:bg-blue-700" type="submit">Registration</button>
+                <button className="bg-gray-700 text-white py-1 px-4 rounded hover: mt-4" type="submit">Registration</button>
             </form>
         </div>
     );
