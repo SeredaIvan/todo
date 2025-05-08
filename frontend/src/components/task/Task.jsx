@@ -85,15 +85,15 @@ import { useState } from "react"
                                     value={formData.desc}
                                     onChange={handleChange}
                                 />
-                                <a href="#" onClick={() => setIsEditing(true)} className="font-medium text-indigo-600 hover:text-indigo-500">Edit</a>
-                            </div>
+                                </div>
                             <div className="mt-4 flex items-center justify-between">
                                 <div>
                                     <label>
                                         <input
                                             type="radio"
                                             name="status"
-                                            checked={formData.status}
+                                            value="true"
+                                            checked={formData.status === "COMPLETED"}
                                             onChange={handleChange}
                                         />
                                         Completed
@@ -102,11 +102,13 @@ import { useState } from "react"
                                         <input
                                             type="radio"
                                             name="status"
-                                            checked={formData.status}
+                                            value="false"
+                                            checked={formData.status === "IN_PROCESS"}
                                             onChange={handleChange}
                                         />
                                         In process
                                     </label>
+
                                 </div>
                                 <a href="#" onClick={() => handleSave(task.id)} className="font-medium text-green-500 hover:text-green-800">OK</a>
                             </div>
@@ -127,7 +129,7 @@ import { useState } from "react"
                                 <a href="#" onClick={() => setIsEditing(true)} className="font-medium text-indigo-600 hover:text-indigo-500">Edit</a>
                             </div>
                             <div className="mt-4 flex items-center justify-between">
-                                <p className="text-sm font-medium text-gray-500">Status: <span className="text-green-600">{task.status==='COMPLETED' ? "Completed" : "In process"}</span></p>
+                                <p className="text-sm font-medium text-gray-500">Status: <span className={task.status==='COMPLETED' ? "text-green-600" : "text-blue-600"}>{task.status==='COMPLETED' ? "Completed" : "In process"}</span></p>
                                 <a href="#" onClick={() => handleDelete(task.id)} className="font-medium text-red-100 hover:text-red-800">Delete</a>
                             </div>
                         </div>
