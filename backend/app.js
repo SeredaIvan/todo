@@ -29,7 +29,7 @@ async function main(){
             console.log()
             const accessToken = jwt.sign(userWithoutPassword, process.env.ACCESS_TOKEN)
             res.status(200).json({
-                accesToken: accessToken,
+                accessToken: accessToken,
                 user:userWithoutPassword
             })
         }
@@ -41,21 +41,30 @@ async function main(){
     app.post('/login',async (req,res)=>{
         const userName = req.body.name
         const password= req.body.password
-        if(userName&&password) {
-            const user = await prisma.user.findUnique({
+        if(!userName || !password) {
+            return res.status(403).json({message:'name and password is required'})
+        }
+        try {
+            const user = await prisma.user.findFirst({
                 where: {
                     name: userName,
                 },
             });
 
-            if (!user&& user.password===password) {
+            if (user) {
+                console.log("Entered password:", password);
+                console.log("Stored hash:", user.password);
+                const valid = await bcrypt.compare(password, user.password)
+                if (!valid) {
+                    return res.status(403).json({message: 'incorrect password'})
+                }
                 const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN)
                 console.log(accessToken)
-                res.status(200).json({accesToken: accessToken})
+                return res.status(200).json({accessToken: accessToken})
             }
         }
-        else {
-            res.status(403).json({message:'name and password is required'})
+        catch (err){
+            throw new Error(err)
         }
     })
 
@@ -76,7 +85,6 @@ main();
 function authentificateUser(req,res,next){
     const authHeader= req.headers['authorization']
     if(!authHeader) return res.sendStatus(403)
-
 
     const token = authHeader.split(' ')[1]
     if(token){
