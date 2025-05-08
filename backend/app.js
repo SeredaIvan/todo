@@ -19,11 +19,18 @@ async function main(){
 
         const hashedPassword = await bcrypt.hash(password, 10)
         try{
-            prisma.user.create({
+            const user = await prisma.user.create({
                 data: {
                     name: userName,
                     password: hashedPassword
                 }
+            })
+            const { password: _, ...userWithoutPassword } = user
+            console.log()
+            const accessToken = jwt.sign(userWithoutPassword, process.env.ACCESS_TOKEN)
+            res.status(200).json({
+                accesToken: accessToken,
+                user:userWithoutPassword
             })
         }
         catch (err){
