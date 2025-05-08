@@ -1,14 +1,19 @@
 "use client"
 import {useEffect, useState} from "react";
+import { useRouter } from 'next/navigation'
+import Task from "@/components/task/Task";
+
 
 export default function Home() {
     const [tasks, setTasks] = useState([])
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null
+    const router = useRouter()
+
     useEffect(() => {
         const fetchTasks = async () => {
             if (!accessToken) {
                 router.push("/login")
-                return;
+                return
             }
 
             const response = await fetch("http://localhost:4000/api/v1.0/task/get-all", {
@@ -17,7 +22,7 @@ export default function Home() {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${accessToken}`,
                 },
-            });
+            })
 
             if (response.ok) {
                 const data = await response.json()
@@ -25,17 +30,27 @@ export default function Home() {
             } else {
                 router.push("/login")
             }
-        };
+        }
 
-        fetchTasks();
+        fetchTasks()
     }, [accessToken, router])
-  return (
-      <div>
-          <h1>Task List</h1>
-          {tasks.length > 0 ? (tasks.map(task => <Task key={task.id} task={task} />)
-          ) : (
-              <p>No tasks available</p>
-          )}
-      </div>
-  )
+
+    const handleUpdate = (updatedTask) => {
+        setTasks(prev =>
+            prev.map(t => (t.id === updatedTask.id ? updatedTask : t))
+        )
+    }
+
+    return (
+        <div>
+            <h1>Task List</h1>
+            {tasks.length > 0 ? (
+                tasks.map(task => (
+                    <Task key={task.id} task={task} onUpdate={handleUpdate} accessToken={accessToken} />
+                ))
+            ) : (
+                <p>No tasks available</p>
+            )}
+        </div>
+    )
 }
