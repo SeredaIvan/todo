@@ -38,15 +38,17 @@ const Login = () => {
     return (
         <div >
             <h2>Login</h2>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="max-w-md p-4 shadow rounded bg-white">
                 <div>
                     <label htmlFor="name">Username</label>
                     <input
                         type="text"
                         id="name"
+                        className="w-full p-2 border rounded"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
+
                     />
                 </div>
                 <div>
@@ -55,11 +57,12 @@ const Login = () => {
                         type="password"
                         id="password"
                         value={password}
+                        className="w-full p-2 border rounded"
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button className="bg-gray-700 text-white py-1 px-4 rounded hover:bg-blue-700" type="submit">Login</button>
             </form>
         </div>
     );

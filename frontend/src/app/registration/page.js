@@ -38,13 +38,14 @@ const Registration = () => {
     return (
         <div >
             <h2>Registration</h2>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="max-w-md p-4 shadow rounded bg-white">
                 <div>
                     <label htmlFor="name">Username</label>
                     <input
                         type="text"
                         id="name"
                         value={name}
+                        className="w-full p-2 border rounded"
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
@@ -55,11 +56,12 @@ const Registration = () => {
                         type="password"
                         id="password"
                         value={password}
+                        className="w-full p-2 border rounded"
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <button type="submit">Registration</button>
+                <button className="bg-gray-700 text-white py-1 px-4 rounded hover:bg-blue-700" type="submit">Registration</button>
             </form>
         </div>
     );
