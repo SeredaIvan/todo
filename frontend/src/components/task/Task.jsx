@@ -5,6 +5,7 @@ import { useState } from "react"
 
      const handleChange = (e) => {
          const { name, value } = e.target
+
          setFormData(prev => ({
              ...prev,
              [name]: name === "status"
@@ -12,6 +13,7 @@ import { useState } from "react"
                  : value
 
          }))
+         console.log(formData)
      }
      const handleSave = async () => {
          const response = await fetch("http://localhost:4000/api/v1.0/task/update", {

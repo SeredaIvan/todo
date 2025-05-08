@@ -102,7 +102,7 @@ export const updateStatus=async (req,res)=>{
         return res.status(500).json({ message: 'server error' })
     }
 }
-export const update=async (req,res)=>{
+export const update = async (req,res)=>{
     const title=req.body.title
     const desc=req.body.desc
     const status=req.body.status

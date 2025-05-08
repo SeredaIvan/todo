@@ -5,12 +5,14 @@ import {
     updateDesc,
     updateStatus,
     deleteTask,
-    getAll
+    getAll,
+    update
 } from "../controllers/taskController.js";
 import {authentificateUser} from "../middlewares/authentificateUser.js";
 
 const router = express.Router();
 router.post('/create', authentificateUser, createTask);
+router.put('/update', authentificateUser, update);
 router.patch('/update/title', authentificateUser, updateTitle);
 router.patch('/update/desc', authentificateUser, updateDesc);
 router.patch('/update/status', authentificateUser, updateStatus);
