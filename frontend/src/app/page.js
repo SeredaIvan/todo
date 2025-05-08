@@ -8,6 +8,7 @@ export default function Home() {
     const [tasks, setTasks] = useState([])
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null
     const router = useRouter()
+    const [sortAsc, setSortAsc] = useState(true);
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -41,11 +42,22 @@ export default function Home() {
         )
     }
 
+    const sortedTasks = [...tasks].sort((a, b) => {
+        if (a.status === b.status) return 0;
+        if (sortAsc) {
+            return a.status === 'IN_PROCESS' ? -1 : 1;
+        } else {
+            return a.status === 'COMPLETED' ? -1 : 1;
+        }
+    });
     return (
         <div>
             <h1>Task List</h1>
-            {tasks.length > 0 ? (
-                tasks.map(task => (
+            <button onClick={() => setSortAsc(prev => !prev)}>
+                Sort: {sortAsc ? "IN_PROCESS → COMPLETED" : "COMPLETED → IN_PROCESS"}
+            </button>
+            {sortedTasks.length > 0 ? (
+                sortedTasks.map(task => (
                     <Task key={task.id} task={task} onUpdate={handleUpdate} accessToken={accessToken} />
                 ))
             ) : (
