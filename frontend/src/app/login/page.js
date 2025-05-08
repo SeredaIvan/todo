@@ -1,22 +1,51 @@
-
-
-
-const handleLogin=()=>{
-
-}
+"use client"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+    const router = useRouter()
 
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        if (!name || !password) {
+            return;
+        }
+
+        const response = await fetch("http://localhost:4000/api/v1.0/auth/login", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                password: password,
+            }),
+        });
+
+        const data = await response.json()
+
+        if (response.ok) {
+            localStorage.setItem('accessToken', data.accessToken)
+            router.push('/')
+        } else {
+            console.log('Something went wrong')
+        }
+    };
 
     return (
-        <div>
+        <div >
             <h2>Login</h2>
-            <form >
+            <form onSubmit={handleLogin}>
                 <div>
                     <label htmlFor="name">Username</label>
                     <input
                         type="text"
                         id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>
@@ -25,6 +54,8 @@ const Login = () => {
                     <input
                         type="password"
                         id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>

@@ -2,12 +2,17 @@ import express from 'express'
 import dotenv from 'dotenv'
 import authRoutes from "./src/routes/authRoutes.js";
 import {authentificateUser} from "./src/middlewares/authentificateUser.js";
+import cors from "cors"
 
 
 const app = express()
 dotenv.config()
 
 async function main(){
+    app.use(cors({
+        origin: "http://localhost:3000",
+        credentials: true,
+    }))
     app.use(express.json());
     app.use('/api/v1.0', authRoutes);
 
